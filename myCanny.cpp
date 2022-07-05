@@ -132,10 +132,24 @@ void my_Canny::gradient(const Mat& image, Mat& dx, Mat& dy, Mat& magnitude) {
     for(int i=0;i<row; i++){
         magnitude_matrix[i] = magnitude_vec + i* col;
     }
-//    copy_to_matrix(magnitude_matrix,image);
+
     float max_magnitude = 0;
-    for (int i = 0; i < image.rows; i++) {
-        for (int j = 0; j < image.cols; j++) {
+//    for (int i = 0; i < image.rows; i++) {
+//        for (int j = 0; j < image.cols; j++) {
+//            magnitude_matrix[i][j] = sqrt(pow(dx_matrix[i][j], 2) + pow(dy_matrix[i][j], 2));
+//        }
+//    }
+    for(int i =0 ;i<image.rows;i++){
+        int j;
+        for(j=0; j+4 < image.cols; j+=4){
+            __m128 dx_float_vec =_mm_loadu_ps(dx_matrix[i]+j);
+            __m128 dy_float_vec =_mm_loadu_ps(dy_matrix[i]+j);
+            dx_float_vec = _mm_mul_ps(dx_float_vec,dx_float_vec);
+            dy_float_vec = _mm_mul_ps(dy_float_vec,dy_float_vec);
+            __m128 res = _mm_sqrt_ps(_mm_add_ps(dx_float_vec,dy_float_vec));
+            _mm_storeu_ps(magnitude_matrix[i]+j,res);
+        }
+        for(;j<image.cols;j++){
             magnitude_matrix[i][j] = sqrt(pow(dx_matrix[i][j], 2) + pow(dy_matrix[i][j], 2));
         }
     }
