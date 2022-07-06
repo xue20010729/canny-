@@ -23,7 +23,7 @@
 //
 //private:
 //    Mat smooth(const Mat& image);
-//    void gradient(const Mat& image, Mat& dx, Mat& dy, Mat& magnitude);
+//    void gradient_sse(const Mat& image, Mat& dx, Mat& dy, Mat& magnitude);
 //    Mat nms(const Mat& dx, const Mat& dy, const Mat& magnitude);
 //    Mat double_threshold(const Mat& nms);
 //    Mat convolution(const Mat& src, const Mat& kernel);
@@ -96,7 +96,7 @@
 //    }
 //    return new_image;
 //}
-//void Canny2::gradient(const Mat& image, Mat& dx, Mat& dy, Mat& magnitude) {
+//void Canny2::gradient_sse(const Mat& image, Mat& dx, Mat& dy, Mat& magnitude) {
 //    float kernel_x_array[3][3] = { {1,0,-1},{2,0,-2},{1,0,-1} };
 //    float kernel_y_array[3][3] = { {1,2,1},{0,0,0},{-1,-2,-1} };
 //    Mat kernel_x(3, 3, CV_32FC1, &kernel_x_array);
@@ -224,7 +224,7 @@
 //    this->convert_image(image);
 //    image = this->smooth(image);
 //    Mat dx, dy, magnitude;
-//    this->gradient(image, dx, dy, magnitude);
+//    this->gradient_sse(image, dx, dy, magnitude);
 //    Mat nms = this->nms(dx, dy, magnitude);
 //    Mat thresh = this->double_threshold(nms);
 //    return thresh;
